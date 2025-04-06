@@ -43,7 +43,7 @@ export default function Category() {
           <div className="image-container">
             <div
               className="image-container"
-              style={{ backgroundImage: `url("/category.jpg")` }}
+              style={{ backgroundImage: `url("/images/category.jpg")` }}
             ></div>
           </div>
         </Grid>
