@@ -110,3 +110,15 @@ $mainGreen: #82ae46;
     color: gray;
   }
 }
+
+.button-success {
+  background-color: $mainGreen;
+  padding: 8px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  &:hover {
+    color: #fff;
+    font-weight: 400;
+  }
+}

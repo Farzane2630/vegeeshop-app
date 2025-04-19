@@ -7,8 +7,7 @@ import { useSelector } from "react-redux";
 export default function BestPrice() {
 
   const bestPrice = useSelector((state) => state.bestPrice);
-  // console.log("best",bestPrice);
-
+  
   // day counter
   const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
   const NOW_IN_MS = new Date().getTime();

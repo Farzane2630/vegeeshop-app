@@ -1,13 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-// import { cartContext } from "../../Contexts/Contexts";
 
 import "./_ProductItem.scss";
 
-export default function ProductItem(props) {
+export default function ProductItem({id, discount, cover, title, price, addToCart, addToWishlist}) {
   const [isShowOptions, setIsShowOptions] = useState(false);
 
   return (
@@ -18,46 +17,42 @@ export default function ProductItem(props) {
       onClick={() => setIsShowOptions(true)}
     >
       <div className="product">
-        <Link to={props.path} className="img-product link">
-          {props.discount ? (
-            <span className="status">{props.discount}%</span>
+        <Link to={`Product-info/${id}`} className="img-product link">
+          {discount ? (
+            <span className="status">{discount}%</span>
           ) : (
             <span className="status hide"> 0 % </span>
           )}
-          <img className="img-fluid" src={props.img} alt={props.name} />
+          <img className="img-fluid" src={cover} alt={title} />
         </Link>
         <div className="p-3 text-center">
           <h3>
             <Link to="#" className="link text">
-              {props.name}{" "}
+              {title}{" "}
             </Link>
           </h3>
           <div className={`pricing ${isShowOptions ? "hide-options" : ""}`}>
             <p className="price">
-              {props.discount ? (
+              {discount ? (
                 <>
-                  <span className="price-dc line-throw">${props.price}</span>
+                  <span className="price-dc line-throw">${price}</span>
                   <span className="price-sale">
-                    ${(props.price * (100 - props.discount)) / 100}
+                    ${(price * (100 - discount)) / 100}
                   </span>
                 </>
               ) : (
-                <span className="price-dc">${props.price}</span>
+                <span className="price-dc">${price}</span>
               )}
             </p>
           </div>
           <div
             className={`icon-container ${!isShowOptions ? "hide-options" : ""}`}
           >
-            <Link to={props.path}>
+            <Link to={`Product-info/${id}`}>
               <MenuIcon className="icon" />
             </Link>
-            <Link to="">
-              <FavoriteIcon className="icon" onClick={props.addToWishlist} />
-            </Link>
-            <Link to="">
-              <ShoppingCartIcon className="icon" onClick={props.addToCart} />
-            </Link>
+              <FavoriteIcon className="icon" onClick={addToWishlist} />
+              <ShoppingCartIcon className="icon" onClick={addToCart} />
           </div>
         </div>
       </div>

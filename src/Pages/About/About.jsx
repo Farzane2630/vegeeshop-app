@@ -1,30 +1,33 @@
-import React from "react";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import Testimony from "../../components/Testimony/Testimony";
-import OurServices from "../../components/OurServices/OurServices";
+import React, { lazy, Suspense } from "react";
 import { useSelector } from "react-redux";
 import CountUp from "../../components/CountUp/CountUp";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Button, Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 
 import "./_About.scss";
 
 export default function About() {
-  const bg = useSelector((state) => state.bgUrl);
-  const bestPrice = useSelector((state) => state.bestPrice);
-  const countUpelems = useSelector((state) => state.countUp);
-  const aboutURL = useSelector((state) => state.about);
+  const Header = lazy(() => import("../../components/Header/Header"))
+  const Footer = lazy(() => import("../../components/Footer/Footer"))
+  const Testimony = lazy(() => import("../../components/Testimony/Testimony"))
+  const OurServices = lazy(() => import("../../components/OurServices/OurServices"))
 
+  const { bestPrice, countUpelems, aboutURL } = useSelector((state) => ({
+    bestPrice: state.bestPrice,
+    countUpelems: state.countUp,
+    aboutURL: state.about,
+  }));
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Header indexPage={false} pageTitle="ABOUT US" />
       <Grid container className="about-container">
         <Grid item xs={12} md={6} className="about-media">
           <div
             className="about-img"
             style={{ backgroundImage: `url(${aboutURL.url})` }}
+            role="img"
+            aria-label="About Us Image"
           >
             <div className="play-icon-bg">
               <PlayArrowIcon className="play-icon" />
@@ -49,11 +52,9 @@ export default function About() {
             abused her for their.
           </p>
 
-          <Button variant="contained" color="success">
-            <Link to="/products/1" className="link">
-              Shop Now
-            </Link>
-          </Button>
+          <Link to="/products/1" className="link button-success">
+            Shop Now
+          </Link>
         </Grid>
       </Grid>
 
@@ -61,13 +62,13 @@ export default function About() {
         className="container-fluid best-price-container"
         style={{ backgroundImage: `url(${bestPrice.bgUrl})` }}
       >
-        {countUpelems.map((elem, index) => (
-          <CountUp key={index} end={elem.end} desc={elem.desc} duration={3} />
+        {countUpelems.map(elem => (
+          <CountUp key={elem.desc} end={elem.end} desc={elem.desc} duration={3} />
         ))}
       </div>
       <Testimony />
       <OurServices about={true} />
       <Footer about={true} />
-    </>
+    </Suspense>
   );
 }

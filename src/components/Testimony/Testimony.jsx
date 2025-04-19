@@ -1,16 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
 import { Pagination } from "swiper";
 import TestimonyItem from "../TestimonyItem/TestimonyItem";
-
+// styles
+import "swiper/css";
+import "swiper/css/pagination";
 import "./_Testimony.scss";
-import { useSelector } from "react-redux";
 
 export default function Testimony() {
   const usersInfo = useSelector((state) => state.usersInfo);
-  // console.log("userinfo => ", usersInfo);
   return (
     <>
       <div className="landing-section-title">Testimony</div>
@@ -43,13 +42,9 @@ export default function Testimony() {
         modules={[Pagination]}
         className="mySwiper testimony-slide"
       >
-        {usersInfo.map((user) => (
+        {usersInfo?.map((user) => (
           <SwiperSlide key={user.userID}>
-            <TestimonyItem
-              src={`${user.userImgUrl}`}
-              name={user.userName}
-              msg={user.userCommentText}
-            />
+            <TestimonyItem {...user} />
           </SwiperSlide>
         ))}
       </Swiper>

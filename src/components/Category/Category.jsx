@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import "./_Category.scss";
 import { useSelector } from "react-redux";
-// import shop from "assets/images/category.jpg";
 
 export default function Category() {
   const categories = useSelector((state) => state.categories);
