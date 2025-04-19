@@ -2,11 +2,14 @@ import React from "react";
 import { Grid, Input, Button } from "@mui/material";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./_Newsletter.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { getInputValueAction } from "../../Redux/Reducers/InputValue";
+// styles
+import "react-toastify/dist/ReactToastify.css";
+import "./_Newsletter.scss";
 
+
+// use form handling and form validation and form reset
 export default function Newsletter() {
   const inputValue = useSelector((state) => state.inputValue);
   const dispatch = useDispatch();
@@ -41,8 +44,8 @@ export default function Newsletter() {
   };
 
 
-  const goToTop = ()=>{
-    window.scrollTo({top: 0, behavior: "smooth"})
+  const goToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
 
