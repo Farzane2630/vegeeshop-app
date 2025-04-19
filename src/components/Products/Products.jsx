@@ -48,6 +48,7 @@ export default function Products() {
   const wishlistHandler = (productID) => {
     const favorieItem = products.find((product) => product.id === productID);
     if (wishlist.includes(favorieItem)) {
+      // make a toast error and success functions to reuse
       toast.error("You have added this Item before!", {
         position: "top-right",
         autoClose: 1000,
@@ -87,11 +88,7 @@ export default function Products() {
             <ProductItem
               addToWishlist={() => wishlistHandler(product.id)}
               addToCart={() => addToCartHandler(product.id)}
-              name={product.title}
-              img={product.cover}
-              price={product.price}
-              discount={product.discount}
-              path={`Product-info/${product.id}`}
+              {...product}
             />
           </Grid>
         ))}
