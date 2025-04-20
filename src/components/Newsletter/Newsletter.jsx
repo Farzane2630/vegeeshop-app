@@ -1,44 +1,39 @@
-import React from "react";
+import { useForm } from "react-hook-form";
 import { Grid, Input, Button } from "@mui/material";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import { ToastContainer, toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
-import { getInputValueAction } from "../../Redux/Reducers/InputValue";
+
 // styles
 import "react-toastify/dist/ReactToastify.css";
 import "./_Newsletter.scss";
 
 
-// use form handling and form validation and form reset
 export default function Newsletter() {
-  const inputValue = useSelector((state) => state.inputValue);
-  const dispatch = useDispatch();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const handleChange = (e) => {
-    dispatch(getInputValueAction(e.target.value));
+  const onSubmit = () => {
+    toast.success("Your email is submitted!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
-  const notify = () => {
-    if (inputValue.length !== 0) {
-      toast.success("Your email is submitted!", {
+
+  const onError = () => {
+    if (errors.email) {
+      toast.error(errors.email.message, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else {
-      toast.error("please enter your email adress!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
+        theme: "colored"
       });
     }
   };
@@ -48,8 +43,6 @@ export default function Newsletter() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-
-
   return (
     <>
       <Grid container columnSpacing={8} className="newsletter-container">
@@ -58,27 +51,35 @@ export default function Newsletter() {
             Subcribe to our Newsletter
           </div>
           <div className="landing-section-details">
-            Get e-mail updates about our latest shops and special offers
+            Get updates about our latest shops and special offers
           </div>
         </Grid>
+
         <Grid item xs={12} sm={6} className="subscribe-container">
-          <Input
-            disableUnderline
-            placeholder="Enter your email address"
-            type="email"
-            required
-            className="subscribe-form"
-            onChange={handleChange}
-          />
-          <Button
-            onClick={notify}
-            variant="contained"
-            className="subscribe-btn"
-            type="submit"
-          >
-            {" "}
-            Subscribe{" "}
-          </Button>
+          <form onSubmit={handleSubmit(onSubmit, onError)}>
+            <Input
+              disableUnderline
+              placeholder="Enter your email address"
+              className="subscribe-form"
+              {...register("email",
+                {
+                  required: "email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email address",
+                  }
+                }
+              )}
+            />
+            <Button
+              variant="contained"
+              className="subscribe-btn"
+              type="submit"
+            >
+              {" "}
+              Subscribe{" "}
+            </Button>
+          </form>
           <ToastContainer
             position="top-right"
             autoClose={5000}
