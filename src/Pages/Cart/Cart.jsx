@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useDispatch, useSelector } from "react-redux";
 import BasicTable from "../../Utils/Table/Table";
 import {
   fetchCartItems,
-  removeFromCart,
-  updateTotalPrice,
+  removeFromCart
 } from "../../Redux/Reducers/cartItems";
 import TextField from "@mui/material/TextField";
 import ShowAlert from "../../Utils/Alert/Alert";
@@ -23,44 +22,39 @@ export default function Cart() {
   };
 
   //cart total price
-  const totalPrice =
-    cartItems.length > 0
+  // useMemo ensures the total price is only recalculated when cartItems changes
+  const totalPrice = useMemo(() => {
+    return cartItems.length > 0
       ? cartItems.reduce((total, product) => {
-          if (product.discount !== 0) {
-            return total + product.price * ((100 - product.discount) / 100);
-          } else {
-            return total + product.price;
-          }
-        }, 0)
+        if (product.discount !== 0) {
+          return total + product.price * ((100 - product.discount) / 100);
+        } else {
+          return total + product.price;
+        }
+      }, 0)
       : 0;
+  }, [cartItems])
 
   // update cart items
   useEffect(() => {
     dispatch(fetchCartItems());
-    dispatch(updateTotalPrice());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <Header indexPage={false} pageTitle="MY CART" />
-      {cartItems.length > 0 ? (
+      {cartItems.length > 0 && (
         <>
           <BasicTable products={cartItems} deleteFromList={deleteFromList} />
           <Grid
             item
             xs={12}
             md={6}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              padding: "0 15rem",
-              columnGap: "5%",
-            }}
+            className="cart-actions"
           >
             <TextField
               id="outlined-basic"
-              label={`$ ${totalPrice.toFixed(2)}`}
+              label={`$ ${totalPrice?.toFixed(2)}`}
               variant="outlined"
               disabled={true}
             />
@@ -68,22 +62,24 @@ export default function Cart() {
               variant="contained"
               color="success"
               className="lets-pay-btn"
+              component={Link}
+              to="/checkout"
             >
-              <Link to="/checkout" className="link">
-                continue and pay
-              </Link>
+              continue and pay
             </Button>
           </Grid>
         </>
-      ) : (
-        <ShowAlert
-          variant="filled"
-          type="error"
-          msg="Cart is Empty!"
-          cart={true}
-        />
       )}
-
+      {
+        cartItems.length === 0 &&
+        (
+          <ShowAlert
+            variant="filled"
+            type="error"
+            msg="Cart is Empty!"
+            cart={true}
+          />
+        )}
       <Footer />
     </>
   );

@@ -1,5 +1,11 @@
-
+.cart-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0 15rem;
+  column-gap: 5%;
+}
 .lets-pay-btn {
-   border-radius: 0% !important;
-   margin-left: 5%;
+  border-radius: 0% !important;
+  margin-left: 5%;
 }
