@@ -1,78 +1,61 @@
-import React from "react";
+import { useCallback, useMemo } from "react";
 import ProductItem from "../ProductItem/ProductItem";
-import { Box, Grid } from "@mui/material";
-import "./_Products.scss";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../Redux/Reducers/cartItems";
 import { addTolist } from "../../Redux/Reducers/Wishlist";
-import { toast } from "react-toastify";
+import showSuccessToast from "../../Utils/Toast/successToast";
+import showErrorToast from "../../Utils/Toast/errorToast";
+// style
+import "./_Products.scss";
 
 
 export default function Products() {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.products.products);
+  const { products, cartItems, wishlist } = useSelector((state) => ({
+    products: state.products.products,
+    cartItems: state.cart,
+    wishlist: state.wishlist
+  }));
 
-//cartItems
-  const cartItems = useSelector((state) => state.cart);
-  const addToCartHandler = (productID) => {
-    const selectedItem = products.find((product) => product.id === productID);
-    if (cartItems.includes(selectedItem)) {
-      toast.error("You have added this Item before!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+  // for better readability and to avoid recalculating it on every render
+  const featuredProducts = useMemo(() => products.slice(0, 8), [products]);
+
+  // Helper function to check if an item exists in a list
+  const findAndCheckDuplicate = (list, products, productID) => {
+    const item = products.find((product) => product.id === productID);
+    const isDuplicate = list.includes(item);
+    return { item, isDuplicate };
+  };
+
+  //cartItems
+  const addToCartHandler = useCallback((productID) => {
+    const { item, isDuplicate } = findAndCheckDuplicate(cartItems, products, productID);
+    if (isDuplicate) {
+      showErrorToast("You have added this Item before!")
     } else {
       dispatch(addToCart(selectedItem));
-      toast.success("Item added to cart", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showSuccessToast("Item added to cart")
     }
-  };
+  }, [cartItems, products, dispatch]);
 
   // wishlist
-  const wishlist = useSelector(state=>state.wishlist)
-
-  const wishlistHandler = (productID) => {
-    const favorieItem = products.find((product) => product.id === productID);
-    if (wishlist.includes(favorieItem)) {
-      // make a toast error and success functions to reuse
-      toast.error("You have added this Item before!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+  const wishlistHandler = useCallback((productID) => {
+    const { item, isDuplicate } = findAndCheckDuplicate(wishlist, products, productID);
+    if (isDuplicate) {
+      showErrorToast("You have added this Item before!")
     } else {
-      toast.success("Item added to wishlist", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showSuccessToast("Item added to wishlist")
       dispatch(addTolist(favorieItem));
     }
-  };
+  }, [wishlist, products, dispatch])
+
+
+
+  if (!products || products.length === 0) {
+    return <div>No Products available!</div>
+  }
 
   return (
     <Box>
@@ -83,8 +66,8 @@ export default function Products() {
         and Consonantia
       </div>
       <Grid container className="products-grid-container">
-        {products.slice(0, 8).map((product, index) => (
-          <Grid key={index + 1} item sx={12} sm={6} md={3} p={3}>
+        {featuredProducts.map((product) => (
+          <Grid key={product.id} item sx={12} sm={6} md={3} p={3}>
             <ProductItem
               addToWishlist={() => wishlistHandler(product.id)}
               addToCart={() => addToCartHandler(product.id)}
