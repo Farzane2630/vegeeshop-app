@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import "./_Contact.scss";
 import MapComponent from "../../components/MapComponent";
 import { GoogleApiWrapper } from "google-maps-react";
+import showSuccessToast from "../../Utils/Toast/successToast";
 
 function Contact() {
   const contactInfo = useSelector((state) => state.contact);
@@ -44,22 +45,12 @@ function Contact() {
 
   // onclick handler
   const sendMessageHandler = () => {
-    toast.success("Your massage has been sent successfully", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+    showSuccessToast("Your massage has been sent successfully")
   };
 
   return (
     <div style={{ backgroundColor: "#f7f6f2" }}>
       <Header indexPage={false} pageTitle="CONTACT US" />
-      // contact section
       <Grid
         container
         className="contact-info-container"
@@ -90,7 +81,8 @@ function Contact() {
           </div>
         </Grid>
       </Grid>
-      // map section
+
+      {/* map section */}
       <Grid
         container
         className="map-contactform"
@@ -110,6 +102,8 @@ function Contact() {
             onMarkerClick={onMarkerClick}
           />
         </Grid>
+
+        {/* Contact Form ===> use react hook form */}
         <Grid item xs={12} lg={6} className="contact-form-container">
           <TextField
             label={"Your Name"}
@@ -134,18 +128,17 @@ function Contact() {
           <textarea
             className="msg-txtaria"
             minRows={3}
-            placeholder="Message"
             required
+            placeholder="Message"
           />
           <Button
+            component="Link"
             variant="contained"
-            color="success"
-            className="order-btn send-btn"
+            className="order-btn send-btn link link-btn"
+            to=""
             onClick={sendMessageHandler}
           >
-            <Link to="" className="link">
-              Send Message
-            </Link>
+            Send Message
           </Button>
         </Grid>
       </Grid>

@@ -8,6 +8,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
 
 import "./_Footer.scss";
+import { PhoneAndroid } from "@mui/icons-material";
 export default function Footer({ about }) {
   return (
     <footer>
@@ -21,31 +22,37 @@ export default function Footer({ about }) {
             Vokalia and Consonantia.
           </p>
           <Grid item sm={12} md={4} className="social-media-icons">
-            <FaTwitter className="icon" />
-            <FaFacebookF className="icon" />
-            <FaInstagram className="icon" />
+            <div>
+              <FaTwitter className="icon link" />
+            </div>
+            <div>
+              <FaFacebookF className="icon link" />
+            </div>
+            <div>
+              <FaInstagram className="icon link" />
+            </div>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={3} className="help">
           <p className="footer-title">Help</p>
           <ul>
             <li>
-              <Link className="link" to="shop">
+              <Link className="link" to="/shop">
                 Shop
               </Link>
             </li>
             <li>
-              <Link className="link" to="about">
+              <Link className="link" to="/about">
                 About
               </Link>
             </li>
             <li>
-              <Link className="link" to="blog">
+              <Link className="link" to="/blog">
                 Journal
               </Link>
             </li>
             <li>
-              <Link className="link" to="contact">
+              <Link className="link" to="/contact">
                 Contact Us
               </Link>
             </li>
@@ -78,6 +85,7 @@ export default function Footer({ about }) {
             203 Fake St. Mountain View, San Francisco, California, USA
           </div>
           <p className="phone">
+            <PhoneAndroid />
             +4915755991926
           </p>
           <div className="email">

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,11 +9,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import MouseOverPopover from "../Poper";
 import { Link } from "react-router-dom";
-import "./_Table.scss";
 import { updateTotalPrice } from "../../Redux/Reducers/cartItems";
 import { useDispatch, useSelector } from "react-redux";
+// style
+import "./_Table.scss";
 
 function ProductRow({ product, deleteFromList, wishlist, addToCartHandler }) {
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const carttItems = useSelector((state) => state.cart);
   const setproductQuantity = (productID, e) => {
@@ -27,33 +28,15 @@ function ProductRow({ product, deleteFromList, wishlist, addToCartHandler }) {
         }
       });
   };
-  const dispatch = useDispatch();
 
   function setNewObject(quantity, productID) {
     const updatetProductObject = {
-      id: product.id,
-      title: product.title,
-      price: product.price,
       quantity: quantity,
-      rate: product.rate,
-      sold: product.sold,
-      cover: product.cover,
-      inStock: product.inStock,
-      category: product.category,
-      discount: product.discount,
+      ...product
     };
     dispatch(updateTotalPrice(productID, updatetProductObject));
   }
 
-  // const totalRowPrice = product.discount !== 0 && product.quantity > 1
-  //         ? ((product.price * (100 - product.discount)) / 100) *
-  //           product.quantity
-  //         : product.discount !== 0 && product.quantity <= 1
-  //         ? product.price * ((100 - product.discount) / 100)
-  //         : product.discount === 0 && product.quantity > 1
-  //         ? product.price * product.quantity
-  //         : ""
-  
   return (
     <TableRow
       key={product.name}
@@ -80,14 +63,12 @@ function ProductRow({ product, deleteFromList, wishlist, addToCartHandler }) {
           <DeleteIcon fontSize="inherit" />
         </IconButton>
         <div className="add-to-cart-btn" onClick={addToCartHandler}>
-          {wishlist ? (
+          {wishlist && (
             <MouseOverPopover path="" PopOverTxt="ADD to CART!" />
-          ) : (
-            ""
           )}
         </div>
         <Link to={`/product-info/${product.id}`} className="link">
-          <img src={product.cover} className="whishItem-img" />
+          <img src={product.cover} className="whishItem-img" alt={product.title} />
         </Link>
         {product.title}
       </TableCell>
@@ -104,9 +85,6 @@ function ProductRow({ product, deleteFromList, wishlist, addToCartHandler }) {
           onChange={(e) => setproductQuantity(product.id, e)}
         />
       </TableCell>
-      {/* <TableCell className="table-body-cell" align="center">
-        {totalRowPrice.toFixed(2)}
-      </TableCell> */}
     </TableRow>
   );
 }

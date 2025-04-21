@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -14,11 +14,11 @@ import Checkbox from "@mui/material/Checkbox";
 import FormLabel from "@mui/material/FormLabel";
 import RadioGroup from "@mui/material/RadioGroup";
 import { Button, Grid } from "@mui/material";
-import swal from "sweetalert";
 
 import "./_Checkout.scss";
 
 export default function Checkout() {
+  const { register, handleSubmit } = useForm()
   // payment
   const context = useContext(cartContext);
   const purchasedItems = useSelector((state) => state.cart);
@@ -30,7 +30,7 @@ export default function Checkout() {
   const totalDiscount = purchasedItems.reduce((total, product) => {
     if (product.discount !== 0) {
       return total + product.discount * context.productQuantity;
-    } 
+    }
     return 0
   }, 0);
 
@@ -40,15 +40,18 @@ export default function Checkout() {
       : subTotal + 4.99;
 
   const [isCheckedOut, setIsCheckedOut] = useState(false);
-  const purchaseHandler = () => {
-    if (purchasedItems.length > 0) {
-      swal({
-        title: "Purchased!",
-        icon: "success",
-        buttons: "confirm",
-      });
-      setIsCheckedOut(true);
-    }
+
+  const purchaseHandler = (data) => {
+    console.log(data);
+
+    // if (purchasedItems.length > 0) {
+    //   swal({
+    //     title: "Purchased!",
+    //     icon: "success",
+    //     buttons: "confirm",
+    //   });
+    //   setIsCheckedOut(true);
+    // }
   };
 
 
@@ -60,111 +63,114 @@ export default function Checkout() {
       <div className="checkout-container">
         <h2 className="billing-header">Billing Details</h2>
 
-        <Grid container className="checkout-grid-container">
-          <Grid item xs={12} lg={6} className="info-table">
-            <InputAdornments />
-            <FormControl>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-              >
-                <FormControlLabel
-                  value="new Account"
-                  control={<Radio />}
-                  label="Create an Account?"
-                />
-                <FormControlLabel
-                  value="different Address"
-                  control={<Radio />}
-                  label="Ship to different address"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-          <Grid className="payment" item lg={6} xs={12}>
-            <div className="cart-total">
-              <h3 className="head">Cart total</h3>
-
-              <div className="sub-total">
-                <span>Subtotal</span>
-                <span>
-                  {purchasedItems.length > 0 ? ` $ ${subTotal}` : `$ 00.0`}
-                </span>
-              </div>
-              <div className="delivery">
-                <span>Delivery</span>
-                <span>{purchasedItems.length > 0 ? ` $ 4.99` : `$ 00.0`}</span>
-              </div>
-              <div className="discount">
-                <span>Discount</span>
-                <span>
-                  {purchasedItems.length > 0 ? ` % ${totalDiscount}` : `%0`}
-                </span>
-              </div>
-              <hr />
-              <div className="total">
-                <span>TOTAL</span>
-                <span className="total-price">
-                  {purchasedItems.length > 0 ? ` $ ${total.toFixed(2)}` : `$ 00.0`}
-                </span>
-              </div>
-            </div>
-            <div className="payment-method">
-              <FormControl clas>
-                <FormLabel
-                  id="demo-radio-buttons-group-label"
-                  className="form-control-label"
-                >
-                  <h3>Payment Method</h3>
-                </FormLabel>
+        <form onSubmit={handleSubmit(purchaseHandler)}>
+          <Grid container className="checkout-grid-container">
+            <Grid item xs={12} lg={6} className="info-table">
+              <InputAdornments register={register} />
+              <FormControl>
                 <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="female"
-                  name="radio-buttons-group"
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
                 >
                   <FormControlLabel
-                    className="radio-btns"
-                    value="female"
+                    value="new Account"
                     control={<Radio />}
-                    label="Direct Bank Transfer"
+                    label="Create an Account?"
                   />
                   <FormControlLabel
-                    className="radio-btns"
-                    value="male"
+                    value="different Address"
                     control={<Radio />}
-                    label="Check Payment"
-                  />
-                  <FormControlLabel
-                    className="radio-btns"
-                    value="other"
-                    control={<Radio />}
-                    label="Paypal"
+                    label="Ship to different address"
                   />
                 </RadioGroup>
               </FormControl>
-              <FormControlLabel
-                className="checkbox-btns"
-                value="end"
-                required
-                control={<Checkbox />}
-                label="I have read and accept the terms and conditions.*"
-              />
+            </Grid>
+            <Grid className="payment" item lg={6} xs={12}>
+              <div className="cart-total">
+                <h3 className="head">Cart total</h3>
 
-              <Button
-                variant="contained"
-                color="success"
-                className="order-btn"
-                onClick={purchaseHandler}
-                disabled={isCheckedOut === false ? false : true}
-              >
-                <Link to="" className="link">
+                <div className="sub-total">
+                  <span>Subtotal</span>
+                  <span>
+                    {purchasedItems.length > 0 ? ` $ ${subTotal}` : `$ 00.0`}
+                  </span>
+                </div>
+                <div className="delivery">
+                  <span>Delivery</span>
+                  <span>{purchasedItems.length > 0 ? ` $ 4.99` : `$ 00.0`}</span>
+                </div>
+                <div className="discount">
+                  <span>Discount</span>
+                  <span>
+                    {purchasedItems.length > 0 ? ` % ${totalDiscount}` : `%0`}
+                  </span>
+                </div>
+                <hr />
+                <div className="total">
+                  <span>TOTAL</span>
+                  <span className="total-price">
+                    {purchasedItems.length > 0 ? ` $ ${total.toFixed(2)}` : `$ 00.0`}
+                  </span>
+                </div>
+              </div>
+              <div className="payment-method">
+                <FormControl clas>
+                  <FormLabel
+                    id="demo-radio-buttons-group-label"
+                    className="form-control-label"
+                  >
+                    <h3>Payment Method</h3>
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue="female"
+                    name="radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      className="radio-btns"
+                      value="female"
+                      control={<Radio />}
+                      label="Direct Bank Transfer"
+                    />
+                    <FormControlLabel
+                      className="radio-btns"
+                      value="male"
+                      control={<Radio />}
+                      label="Check Payment"
+                    />
+                    <FormControlLabel
+                      className="radio-btns"
+                      value="other"
+                      control={<Radio />}
+                      label="Paypal"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <FormControlLabel
+                  className="checkbox-btns"
+                  value="end"
+                  required
+                  control={<Checkbox />}
+                  label="I have read and accept the terms and conditions.*"
+                />
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                  className="order-btn"
+                  // onClick={purchaseHandler}
+                  disabled={isCheckedOut}
+                  component="Link"
+                  to=""
+                >
                   Place an order
-                </Link>
-              </Button>
-            </div>
+                </Button>
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
+        </form>
       </div>
       <Footer />
     </>

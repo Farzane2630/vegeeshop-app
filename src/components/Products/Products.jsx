@@ -13,6 +13,7 @@ import "./_Products.scss";
 
 export default function Products() {
   const dispatch = useDispatch();
+  // here%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   const { products, cartItems, wishlist } = useSelector((state) => ({
     products: state.products.products,
     cartItems: state.cart,
@@ -35,7 +36,7 @@ export default function Products() {
     if (isDuplicate) {
       showErrorToast("You have added this Item before!")
     } else {
-      dispatch(addToCart(selectedItem));
+      dispatch(addToCart(item));
       showSuccessToast("Item added to cart")
     }
   }, [cartItems, products, dispatch]);
@@ -46,25 +47,25 @@ export default function Products() {
     if (isDuplicate) {
       showErrorToast("You have added this Item before!")
     } else {
+      dispatch(addTolist(item));
       showSuccessToast("Item added to wishlist")
-      dispatch(addTolist(favorieItem));
     }
   }, [wishlist, products, dispatch])
 
 
 
   if (!products || products.length === 0) {
-    return <div>No Products available!</div>
+    return <p>No Products available!</p>
   }
 
   return (
     <Box>
-      <div className="landing-section-title">Featured Products</div>
-      <div className="landing-section-subtitle">Our Products</div>
-      <div className="landing-section-details">
+      <em className="landing-section-title">Featured Products</em>
+      <p className="landing-section-subtitle">Our Products</p>
+      <p className="landing-section-details">
         Far far away, behind the word mountains, far from the countries Vokalia
         and Consonantia
-      </div>
+      </p>
       <Grid container className="products-grid-container">
         {featuredProducts.map((product) => (
           <Grid key={product.id} item sx={12} sm={6} md={3} p={3}>

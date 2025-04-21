@@ -1,13 +1,14 @@
 import React, { lazy, Suspense } from "react";
-import { useSelector } from "react-redux";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 import CountUp from "../../components/CountUp/CountUp";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import "./_About.scss";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
+import OurServices from "../../components/OurServices/OurServices";
 
 export default function About() {
   const Testimony = lazy(() => import("../../components/Testimony/Testimony"))
@@ -32,9 +33,9 @@ export default function About() {
           </div>
         </Grid>
         <Grid item xs={12} md={6} className="about-description">
-          <h2 className="about-header">
+          <p className="about-header">
             Welcome to Vegefoods an eCommerce website
-          </h2>
+          </p>
 
           <p className="about-details">
             Far far away, behind the word mountains, far from the countries
@@ -63,7 +64,7 @@ export default function About() {
           <CountUp key={elem.desc} {...elem} duration={3} />
         ))}
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<p>Loading...</p>}>
         <Testimony />
       </Suspense>
       <OurServices about={true} />
