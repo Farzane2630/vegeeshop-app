@@ -8,32 +8,26 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
 
 import "./_Footer.scss";
-export default function Footer({about}) {
+export default function Footer({ about }) {
   return (
-    <>
+    <footer>
       {about ? "" : <Newsletter />}
 
       <Grid container className="footer">
         <Grid item xs={12} sm={3} className="v-food">
-          <h2 className="footer-title">Vegefoods</h2>
-          <div className="details">
+          <strong className="footer-title">Vegefoods</strong>
+          <p className="details">
             Far far away, behind the word mountains, far from the countries
             Vokalia and Consonantia.
-          </div>
+          </p>
           <Grid item sm={12} md={4} className="social-media-icons">
-            <Link to="#">
-              <FaTwitter className="icon" />
-            </Link>
-            <Link to="#">
-              <FaFacebookF className="icon" />
-            </Link>
-            <Link to="#">
-              <FaInstagram className="icon" />
-            </Link>
+            <FaTwitter className="icon" />
+            <FaFacebookF className="icon" />
+            <FaInstagram className="icon" />
           </Grid>
         </Grid>
         <Grid item xs={12} sm={3} className="help">
-          <h2 className="footer-title">Help</h2>
+          <p className="footer-title">Help</p>
           <ul>
             <li>
               <Link className="link" to="shop">
@@ -58,48 +52,34 @@ export default function Footer({about}) {
           </ul>
         </Grid>
         <Grid item xs={12} sm={3} className="menu">
-          <h2 className="footer-title">Menu</h2>
+          <p className="footer-title">Menu</p>
           <Grid container columnSpacing={2}>
             <Grid item xs={12} md={6}>
               <ul className="menu-list">
-                <li>
-                  <Link className="link">Shipping</Link>
-                </li>
-                <li>
-                  <Link className="link">Information</Link>
-                </li>
-                <li>
-                  <Link className="link">Returns & Exchange</Link>
-                </li>
-                <li>
-                  <Link className="link">Terms & Conditions</Link>
-                </li>
-                <li>
-                  <Link className="link">Privacy Policy</Link>
-                </li>
+                <li className="link">Shipping </li>
+                <li className="link"> Information </li>
+                <li className="link"> Returns & Exchange</li>
+                <li className="link">Terms & Conditions </li>
+                <li className="link">Privacy Policy  </li>
               </ul>
             </Grid>
             <Grid item xs={12} md={6}>
               <ul className="menu-list">
-                <li>
-                  <Link className="link">FAQs</Link>
-                </li>
-                <li>
-                  <Link className="link">Contact</Link>
-                </li>
+                <li className="link">FAQs</li>
+                <li className="link">Contact</li>
               </ul>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={3} className="contact">
-          <h2 className="footer-title">Have You Question?</h2>
+          <p className="footer-title">Have You Question?</p>
           <div className="location">
             <LocationOnIcon />
             203 Fake St. Mountain View, San Francisco, California, USA
           </div>
-          <div className="phone">
+          <p className="phone">
             +4915755991926
-          </div>
+          </p>
           <div className="email">
             <MailIcon />
             farzanekazemi8517@gmail.com
@@ -113,6 +93,6 @@ export default function Footer({about}) {
           FARZANAK
         </Link>
       </p>
-    </>
+    </footer>
   );
 }

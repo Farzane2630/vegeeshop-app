@@ -19,6 +19,11 @@ $mainGreen: #82ae46;
   }
 }
 
+.link-btn {
+  background-color: $mainGreen !important;
+  color: #fff !important;
+}
+
 .landing-section-title {
   @include textCenter(24px, _, $mainGreen, ("Lora", Georgia, serif), italic);
   display: block;

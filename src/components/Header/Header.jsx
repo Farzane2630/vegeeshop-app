@@ -1,121 +1,76 @@
-import React from "react";
 import TopContactbar from "../TopContactbar/TopContactbar";
 import NavBar from "../Navbar/NavBar";
 import Hero from "../Hero/Hero";
 import { useSelector } from "react-redux";
 import { SwiperSlide } from "swiper/react";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+//style
+import "./_Header.scss"
+
+
+// Header component for HomePage
+const IndexHeaderSlide = ({ src }) => {
+  return (
+    <>
+      <img src={src} alt="header-page-image" className="header-image" />
+      <div className="black-shade-div" ></div>
+      <div className="header-slide-txt">
+        <p className="mb-2 index-title"> 100% Fresh & Organic Fruits</p>
+        <p className="index-sub-title">
+          We Deliver Organic Vegetables & Fruits
+        </p>
+        <Button
+          component="Link" variant="contained"
+          to="about"
+          style={{ marginBottom: "10rem" }}
+          className="link link-btn"
+        >
+          View Details
+        </Button>
+      </div>
+    </>
+
+  )
+}
+//Header component for other pages
+const HeaderSlide = ({ pageTitle, src }) => {
+  return (
+    <>
+      <img src={src} alt="header-page-image" className="header-image" />
+      <div className="black-shade-div"></div>
+      <div className="header-slide-txt">
+        <p className="product-title" style={{ marginTop: "10%", opacity: 1 }} >
+          {pageTitle}
+        </p>
+      </div>
+    </>
+  )
+}
+
 
 export default function Header({ indexPage, pageTitle }) {
   const bg = useSelector((state) => state.bgUrl || []);
 
   return (
-    <>
+    <header>
       <TopContactbar />
       <NavBar />
       <Hero indexPage={indexPage}>
         {indexPage ? (
-          <>
-            <SwiperSlide
-              className="slide-1"
-              style={{
-                backgroundImage: `url(${bg[0]?.url})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  opacity: 0.5,
-                  background: "black",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                }}
-              ></div>
-              <h1 className="mb-2 index-title"> 100% Fresh & Organic Fruits</h1>
-              <h2 className="index-sub-title">
-                {" "}
-                We Deliver Organic Vegetables & Fruits{" "}
-              </h2>
-              <Button
-                variant="contained"
-                color="success"
-                style={{ marginBottom: "10rem" }}
-              >
-                <Link className="link" to="about">
-                  View Details
-                </Link>
-              </Button>
+          <section>
+            <SwiperSlide className="slide-1 header-slide" >
+              <IndexHeaderSlide src={bg[0]?.url} />
             </SwiperSlide>
-
-            <SwiperSlide
-              className="slide-2"
-              style={{
-                backgroundImage: `url(${bg[2]?.url})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  opacity: 0.5,
-                  background: "black",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                }}
-              ></div>
-              <h1 className="mb-2 index-title"> 100% Fresh & Organic Fruits</h1>
-              <h2 className="index-sub-title">
-                {" "}
-                We Serve Fresh Vegetables & Fruits{" "}
-              </h2>
-              <Button variant="contained" color="success">
-                <Link className="link" to="about">
-                  View Details
-                </Link>
-              </Button>
+            <SwiperSlide className="slide-1 header-slide" >
+              <IndexHeaderSlide src={bg[2]?.url} />
             </SwiperSlide>
-          </>
+          </section>
         ) : (
-          <SwiperSlide
-            className="slide-1"
-            style={{
-              backgroundImage: `url(${bg[1]?.url})`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                opacity: 0.5,
-                background: "black",
-                position: "absolute",
-                top: 0,
-                left: 0,
-              }}
-            >
-              <h1
-                className="product-title"
-                style={{ marginTop: "10%", opacity: 1 }}
-              >
-                {pageTitle}
-              </h1>
-            </div>
+          <SwiperSlide className="slide-1 header-slide" >
+            <HeaderSlide src={bg[1]?.url} pageTitle={pageTitle} />
           </SwiperSlide>
         )}
       </Hero>
-    </>
+    </header>
   );
 }
