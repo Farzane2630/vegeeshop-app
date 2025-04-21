@@ -1,4 +1,4 @@
-$mainGreen: #82ae46;
+@import "/src/Style/Style.scss";
 
 @mixin flexCenter($direction, $justify) {
   display: flex;
@@ -14,36 +14,58 @@ $mainGreen: #82ae46;
   .grid-item {
     @include flexCenter(column, center);
     width: 25%;
-    // padding: 0 10px;
+    padding: 10px;
 
-    .image-container {
-      @include flexCenter(column, flex-end);
-      align-items: baseline;
-      background-size: cover;
-      background-position: center;
+    .image-wrapper {
+      position: relative;
       width: 100%;
-      height: 250px;
       margin: 5px;
-      border: none;
+
+      img.image-container {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      .category-title {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: $mainGreen;
+        color: white;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 5px 8px;
+        z-index: 2;
+      }
     }
 
-    .shop-part {
-      @include flexCenter(column, flex-start);
-    }
+    .shop-image-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 500px;
+      width: 100%;
+      margin: 5px;
 
-    .category-title {
-      width: fit-content;
-      padding: 3px 5px;
-      background-color: $mainGreen;
-      font-size: 18px;
-      font-weight: 500;
-      color: #fff;
-      align-self: baseline;
-      justify-self: baseline;
+      .shop-part {
+        @include flexCenter(column, flex-start);
+        padding: 10px;
+      }
+
+      img.image-container {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+      }
     }
   }
 }
 
+button,
 Button {
   border-radius: 20px !important;
   background-color: $mainGreen !important;
@@ -54,4 +76,8 @@ Button {
     color: $mainGreen !important;
     border: $mainGreen thin solid !important;
   }
+}
+
+.shop-now-btn {
+  background-color: $mainGreen !important;
 }
