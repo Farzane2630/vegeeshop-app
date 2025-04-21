@@ -6,20 +6,17 @@ import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 
 import "./_About.scss";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 
 export default function About() {
-  const Header = lazy(() => import("../../components/Header/Header"))
-  const Footer = lazy(() => import("../../components/Footer/Footer"))
   const Testimony = lazy(() => import("../../components/Testimony/Testimony"))
-  const OurServices = lazy(() => import("../../components/OurServices/OurServices"))
+  const bestPrice = useSelector((state) => state.bestPrice);
+  const countUpelems = useSelector((state) => state.countUp);
+  const aboutURL = useSelector((state) => state.about);
 
-  const { bestPrice, countUpelems, aboutURL } = useSelector((state) => ({
-    bestPrice: state.bestPrice,
-    countUpelems: state.countUp,
-    aboutURL: state.about,
-  }));
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <>
       <Header indexPage={false} pageTitle="ABOUT US" />
       <Grid container className="about-container">
         <Grid item xs={12} md={6} className="about-media">
@@ -63,12 +60,14 @@ export default function About() {
         style={{ backgroundImage: `url(${bestPrice.bgUrl})` }}
       >
         {countUpelems.map(elem => (
-          <CountUp key={elem.desc} end={elem.end} desc={elem.desc} duration={3} />
+          <CountUp key={elem.desc} {...elem} duration={3} />
         ))}
       </div>
-      <Testimony />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Testimony />
+      </Suspense>
       <OurServices about={true} />
       <Footer about={true} />
-    </Suspense>
+    </>
   );
 }
