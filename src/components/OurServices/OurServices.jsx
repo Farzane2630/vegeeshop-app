@@ -6,7 +6,7 @@ import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp
 
 import "./_OurServices.scss";
 
-export default function OurServices({ about }) {
+export default React.memo(function OurServices({ about }) {
   const goToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -42,4 +42,4 @@ export default function OurServices({ about }) {
       )}
     </Box>
   );
-}
+})
