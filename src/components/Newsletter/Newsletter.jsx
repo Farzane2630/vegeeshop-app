@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { Grid, Input, Button } from "@mui/material";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
-import { ToastContainer, toast } from "react-toastify";
+import Toast from "../../Utils/Toast/Toast";
+import showSuccessToast from "../../Utils/Toast/successToast";
+import showErrorToast from "../../Utils/Toast/errorToast";
 
 // styles
 import "react-toastify/dist/ReactToastify.css";
@@ -9,32 +11,20 @@ import "./_Newsletter.scss";
 
 
 export default function Newsletter() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const onSubmit = () => {
-    toast.success("Your email is submitted!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+    try {
+      showSuccessToast("Your email is submitted!");
+      reset();
+    } catch (error) {
+      console.error("Toast error:", error);
+    }
   };
 
   const onError = () => {
     if (errors.email) {
-      toast.error(errors.email.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored"
-      });
+      showErrorToast(errors.email.message)
     }
   };
 
@@ -59,6 +49,7 @@ export default function Newsletter() {
           <form onSubmit={handleSubmit(onSubmit, onError)}>
             <Input
               disableUnderline
+              aria-label="Email address"
               placeholder="Enter your email address"
               className="subscribe-form"
               {...register("email",
@@ -75,23 +66,9 @@ export default function Newsletter() {
               variant="contained"
               className="subscribe-btn"
               type="submit"
-            >
-              {" "}
-              Subscribe{" "}
-            </Button>
+            >Subscribe</Button>
           </form>
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />
+          <Toast />
         </Grid>
       </Grid>
       <div className="swipe-up">

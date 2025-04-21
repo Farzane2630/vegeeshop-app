@@ -1,12 +1,11 @@
-import React from "react";
 import { ToastContainer } from "react-toastify";
 
 export default function Toast() {
   return (
-    <div>
+    <>
       <ToastContainer
         position="top-right"
-        autoClose={1000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={true}
         closeOnClick
@@ -16,6 +15,6 @@ export default function Toast() {
         pauseOnHover
         theme="colored"
       />
-    </div>
+    </>
   );
 }
