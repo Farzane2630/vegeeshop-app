@@ -1,119 +1,81 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import "swiper/css";
-import "./_Products.scss";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import ProductItem from "../../components/ProductItem/ProductItem";
 import CustomPagination from "../../Utils/Pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategory } from "../../Redux/Reducers/products";
 import { addToCart } from "../../Redux/Reducers/cartItems";
 import { addTolist } from "../../Redux/Reducers/Wishlist";
-import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import showSuccessToast from "../../Utils/Toast/successToast";
+import showErrorToast from "../../Utils/Toast/errorToast";
+// style
+import "swiper/css";
+import "./_Products.scss";
 
 export default function Products() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
   const categories = useSelector((state) => state.products.categories);
-  const selectedCategory = useSelector(
-    (state) => state.products.selectedCategory
-  );
-
-  const filterProductsHandel = (category) => {
-    dispatch(selectCategory(category));
-  };
-
-  const filteredProducts =
-    selectedCategory && selectedCategory !== "All"
-      ? products.filter((product) => product.category === selectedCategory)
-      : products;
-
-  //pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsCountPerPage = 8;
-  const indexOfLastItem = currentPage * itemsCountPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsCountPerPage;
-  const shownItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+  const selectedCategory = useSelector((state) => state.products.selectedCategory);
+  const cartItems = useSelector(state => state.cart)
+  const wishlist = useSelector(state => state.wishlist)
 
   //cartItems
-  const cartItems = useSelector((state) => state.cart);
-
-  const addToCartHandler = (product) => {
-    if (cartItems.length > 1 && cartItems.includes(product)) {
-      toast.error("You have added this Item before!", {
-        position: "top-right",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+  const addToCartHandler = useCallback((product) => {
+    if (cartItems?.length > 1 && cartItems.includes(product)) {
+      showErrorToast("You have added this Item before!")
     } else {
-      toast.success("Item added to cart", {
-        position: "top-right",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showSuccessToast("Item added to cart")
       const updatedProductObject = {
         id: uuidv4(),
-        title: product.title,
-        price: product.price,
         quantity: 1,
-        rate: product.rate,
-        sold: product.sold,
-        cover: product.cover,
-        inStock: product.inStock,
-        category: product.category,
-        discount: product.discount,
+        ...product,
       };
 
       dispatch(addToCart(updatedProductObject));
     }
-  };
-  
+  }, [cartItems, dispatch])
 
   //wishlist
-  const wishlist = useSelector((state) => state.wishlist);
-
-  const wishlistHandler = (productID) => {
+  const wishlistHandler = useCallback((productID) => {
     const favoriteItem = products.find((product) => product.id === productID);
     if (wishlist.includes(favoriteItem)) {
-      toast.error("You have added this Item before!", {
-        position: "top-right",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showErrorToast("You have added this Item before!")
     } else {
-      toast.success("Item has been added to your wishlist", {
-        position: "top-right",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showSuccessToast("Item has been added to your wishlist.")
     }
     dispatch(addTolist(favoriteItem));
+  }, [products, wishlist, dispatch])
+
+
+  // filtered Products
+  const filterProductsHandel = useCallback((category) => {
+    dispatch(selectCategory(category));
+  }, [dispatch])
+
+
+  // Problem: The filteredProducts array is recalculated on every render, even if the products or selectedCategory hasn't changed.
+  //Solution: Use useMemo to memoize the filtered products.
+  const filteredProducts = useMemo(() => {
+    return selectedCategory && selectedCategory !== "All"
+      ? products.filter((product) => product.category === selectedCategory)
+      : products;
+  }, [products, selectedCategory])
+
+  //pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsCountPerPage = 8;
+  const shownItems = useMemo(() => {
+    const indexOfLastItem = currentPage * itemsCountPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsCountPerPage;
+    return filteredProducts.slice(indexOfFirstItem, indexOfLastItem)
+  }, [filteredProducts, currentPage, itemsCountPerPage])
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   return (
@@ -123,9 +85,9 @@ export default function Products() {
       <ul className="filter">
         {categories.map((category) => (
           <li
+            key={category.id}
             className="filter-item"
             onClick={() => filterProductsHandel(category.title)}
-            key={category.id}
           >
             {category.title}
           </li>
@@ -138,11 +100,7 @@ export default function Products() {
             <ProductItem
               addToWishlist={() => wishlistHandler(product.id)}
               addToCart={() => addToCartHandler(product)}
-              name={product.title}
-              img={product.cover}
-              price={product.price}
-              discount={product.discount}
-              path={`/product-info/${product.id}`}
+              {...product}
             />
           </Grid>
         ))}
