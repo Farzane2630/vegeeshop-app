@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,8 +10,9 @@ import {
 } from "../../Redux/Reducers/cartItems";
 import TextField from "@mui/material/TextField";
 import ShowAlert from "../../Utils/Alert/Alert";
-import { Button, Grid } from "@mui/material";
-import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+// style
 import "./_Cart.scss";
 
 export default function Cart() {
@@ -60,7 +62,6 @@ export default function Cart() {
             />
             <Button
               variant="contained"
-              color="success"
               className="lets-pay-btn"
               component={Link}
               to="/checkout"
