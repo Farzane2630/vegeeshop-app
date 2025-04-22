@@ -19,3 +19,15 @@
       width: 100%;
       text-align: left;
    }
+
+   .form-inputs-Wrapper {
+  display:flex;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  min-height: 100px !important;
+  p {
+    margin-left: 8px !important;
+    margin-bottom: 0;
+  }
+}

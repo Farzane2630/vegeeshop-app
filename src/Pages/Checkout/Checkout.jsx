@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -18,7 +18,7 @@ import { Button, Grid } from "@mui/material";
 import "./_Checkout.scss";
 
 export default function Checkout() {
-  const { register, handleSubmit } = useForm()
+  // const { register, handleSubmit } = useForm()
   // payment
   const context = useContext(cartContext);
   const purchasedItems = useSelector((state) => state.cart);
@@ -63,10 +63,12 @@ export default function Checkout() {
       <div className="checkout-container">
         <h2 className="billing-header">Billing Details</h2>
 
-        <form onSubmit={handleSubmit(purchaseHandler)}>
+        {/* <form 
+        onSubmit={handleSubmit(purchaseHandler)}
+        > */}
           <Grid container className="checkout-grid-container">
             <Grid item xs={12} lg={6} className="info-table">
-              <InputAdornments register={register} />
+              <InputAdornments />
               <FormControl>
                 <RadioGroup
                   row
@@ -161,7 +163,7 @@ export default function Checkout() {
                   color="success"
                   className="order-btn"
                   // onClick={purchaseHandler}
-                  disabled={isCheckedOut}
+                  // disabled={isCheckedOut}
                   component="Link"
                   to=""
                 >
@@ -170,7 +172,7 @@ export default function Checkout() {
               </div>
             </Grid>
           </Grid>
-        </form>
+        {/* </form> */}
       </div>
       <Footer />
     </>
