@@ -77,6 +77,18 @@ export const removeFromCart = createAsyncThunk("removeFromCart", async (id) => {
   return id;
 });
 
+export const emptyCart = createAsyncThunk("emptyCart", async (_, { getState }) => {
+  const state = getState();
+  const cartItems = state.cart;
+
+  // Wait for all DELETE requests to complete
+  await Promise.all(
+    cartItems.map(item => apiRequests.delete(`/cartItems/${item.id}`))
+  );
+
+  return [];
+});
+
 const slice = createSlice({
   name: "cart items",
   initialState: [],
@@ -84,17 +96,18 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(addToCart.fulfilled, (state, action) => {
       return [...state, action.payload];
-    });
-    builder.addCase(updateTotalPrice.fulfilled, (state, action) => {
+    }).addCase(updateTotalPrice.fulfilled, (state, action) => {
       return action.payload;
-    });
-    builder.addCase(fetchCartItems.fulfilled, (state, action) => {
+    }).addCase(fetchCartItems.fulfilled, (state, action) => {
       return action.payload;
-    });
-    builder.addCase(removeFromCart.fulfilled, (state, action) => {
+    }).addCase(removeFromCart.fulfilled, (state, action) => {
       const newState = state.filter((product) => product.id !== action.payload);
       return newState;
-    });
+    }).addCase(emptyCart.fulfilled, (state, action) => {
+  
+      const newState = action.payload
+      return newState;
+    })
   },
 });
 

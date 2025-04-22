@@ -15,7 +15,8 @@ import cartReducer, {
   updateTotalPrice,
   addToCart,
   fetchCartItems,
-  removeFromCart
+  removeFromCart,
+  emptyCart
 } from "./Reducers/cartItems";
 import countUpReducer, { fetchCountUpData } from "./Reducers/countUp";
 import aboutReducer, { fetchAboutData } from "./Reducers/about";
@@ -55,5 +56,6 @@ store.dispatch(addToCart());
 store.dispatch(fetchCartItems());
 store.dispatch(updateTotalPrice());
 store.dispatch(removeFromCart());
+store.dispatch(emptyCart());
 
 export default store;
