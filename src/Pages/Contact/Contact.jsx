@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useSelector } from "react-redux";
-import { Grid, TextField, Button } from "@mui/material";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-
-import "./_Contact.scss";
+import { Grid } from "@mui/material";
 import MapComponent from "../../components/MapComponent";
 import { GoogleApiWrapper } from "google-maps-react";
-import showSuccessToast from "../../Utils/Toast/successToast";
+import Form from "../../components/Contact/Form/Form";
+// style
+import "./_Contact.scss";
 
 function Contact() {
   const contactInfo = useSelector((state) => state.contact);
@@ -43,14 +41,10 @@ function Contact() {
     height: "100%",
   };
 
-  // onclick handler
-  const sendMessageHandler = () => {
-    showSuccessToast("Your massage has been sent successfully")
-  };
-
   return (
     <div style={{ backgroundColor: "#f7f6f2" }}>
       <Header indexPage={false} pageTitle="CONTACT US" />
+      {/* Contact info boxes */}
       <Grid
         container
         className="contact-info-container"
@@ -103,44 +97,8 @@ function Contact() {
           />
         </Grid>
 
-        {/* Contact Form ===> use react hook form */}
-        <Grid item xs={12} lg={6} className="contact-form-container">
-          <TextField
-            label={"Your Name"}
-            id="margin-normal"
-            margin="normal"
-            fullWidth
-          />
-          <TextField
-            label={"Your Email"}
-            id="margin-normal"
-            margin="normal"
-            fullWidth
-            required
-          />
-          <TextField
-            label={"Subject"}
-            id="margin-normal"
-            margin="normal"
-            fullWidth
-          />
-
-          <textarea
-            className="msg-txtaria"
-            minRows={3}
-            required
-            placeholder="Message"
-          />
-          <Button
-            component="Link"
-            variant="contained"
-            className="order-btn send-btn link link-btn"
-            to=""
-            onClick={sendMessageHandler}
-          >
-            Send Message
-          </Button>
-        </Grid>
+        {/* Contact Form */}
+        <Form />
       </Grid>
       <Footer />
     </div>
