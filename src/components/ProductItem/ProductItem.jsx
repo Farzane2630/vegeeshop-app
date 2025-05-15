@@ -6,7 +6,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import "./_ProductItem.scss";
 
-export default function ProductItem({id, discount, cover, title, price, addToCart, addToWishlist}) {
+export default function ProductItem({ id, discount, cover, title, price, addToCart, addToWishlist }) {
   const [isShowOptions, setIsShowOptions] = useState(false);
 
   return (
@@ -17,7 +17,7 @@ export default function ProductItem({id, discount, cover, title, price, addToCar
       onClick={() => setIsShowOptions(true)}
     >
       <div className="product">
-        <Link to={`Product-info/${id}`} className="img-product link">
+        <Link to={`/product-info/${id}`} className="img-product link">
           {discount ? (
             <span className="status">{discount}%</span>
           ) : (
@@ -48,11 +48,11 @@ export default function ProductItem({id, discount, cover, title, price, addToCar
           <div
             className={`icon-container ${!isShowOptions ? "hide-options" : ""}`}
           >
-            <Link to={`Product-info/${id}`}>
+            <Link to={`/product-info/${id}`}>
               <MenuIcon className="icon" />
             </Link>
-              <FavoriteIcon className="icon" onClick={addToWishlist} />
-              <ShoppingCartIcon className="icon" onClick={addToCart} />
+            <FavoriteIcon className="icon" onClick={addToWishlist} />
+            <ShoppingCartIcon className="icon" onClick={addToCart} />
           </div>
         </div>
       </div>
