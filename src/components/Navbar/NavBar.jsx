@@ -6,6 +6,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaUser } from "react-icons/fa";
 
 import "./_Navbar.scss";
 
@@ -63,6 +64,12 @@ export default function NavBar() {
               <Link to="/cart" className="link">
                 <ShoppingCartIcon />
                 <span className="orders-count">[{selectedProducts.length}]</span>
+              </Link>
+            </Nav.Link>
+            <Nav.Link href="/cart" className="nav-item cart-elem">
+              <Link to="/register" className="link">
+                <FaUser />
+                {/* <span className="orders-count">[{selectedProducts.length}]</span> */}
               </Link>
             </Nav.Link>
           </Nav>

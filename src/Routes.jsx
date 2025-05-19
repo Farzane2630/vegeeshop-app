@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import react, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router";
 
 
@@ -11,12 +11,14 @@ const Checkout = lazy(() => import("./Pages/Checkout/Checkout"))
 const Contact = lazy(() => import("./Pages/Contact/Contact"))
 const ProductInfo = lazy(() => import("./Pages/ProductInfo/ProductInfo"))
 const WishList = lazy(() => import("./Pages/WishList/WishList"))
+const Register = lazy(() => import("./Pages/Auth/Register"))
 
 export default function AllRoutes() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" Component={Index} />
+        <Route path="register" Component={Register} />
         <Route path="products/:currentPageCount" Component={Products} />
         <Route path="about" Component={About} />
         <Route path="blog" Component={Blog} />

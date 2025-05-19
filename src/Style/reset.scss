@@ -90,7 +90,11 @@ video {
 
 html,
 body {
+  height: 100dvh !important;
   overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow: hidden !important; /* Prevent horizontal scrolling */
+  margin: 0;
+  padding: 0;
 }
 
 /* HTML5 display-role reset for older browsers */

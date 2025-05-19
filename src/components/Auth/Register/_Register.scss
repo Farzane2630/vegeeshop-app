@@ -1,0 +1,34 @@
+@import "/src/Style/Style.scss";
+
+.register_component {
+  display: flex !important;
+  flex-direction: row;
+  height: 100dvh !important;
+}
+
+#register_page_image {
+  width: 65% !important;
+  height: 100%;
+}
+.register_banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#register-page-form_section {
+  // width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .logo {
+   font-size: large;
+   font-weight: bold;
+   color: $mainGreen !important;
+   
+ }
+ 
+}
